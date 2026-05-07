@@ -1,0 +1,2195 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GeekBrain AI</title>
+  <style>
+    /* Import Plus Jakarta Sans font */
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap');
+
+    /* Design Tokens */
+    :root {
+      /* Typography */
+      --font-family-primary: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-size-xs: 12px;
+      --font-size-sm: 12.96px;
+      --font-size-base: 12.96px;
+      --font-size-md: 13.33px;
+      --font-size-lg: 16px;
+      --font-size-xl: 16.56px;
+      --font-size-2xl: 19.2px;
+      --font-size-3xl: 22.4px;
+      --font-size-4xl: 25.6px;
+      --font-weight-base: 400;
+      --font-weight-semibold: 600;
+      --font-weight-bold: 700;
+      --line-height-base: normal;
+
+      /* Colors */
+      --color-text-primary: #1a1a1a;
+      --color-text-secondary: #ffffff;
+      --color-text-inverse: #1e293b;
+      --color-text-muted: #6b7280;
+      --color-surface-base: #000000;
+      --color-surface-strong: #0d1117;
+      --color-surface-light: #ffffff;
+      --color-surface-elevated: #f9fafb;
+      --color-border-default: #e5e7eb;
+      --color-border-strong: #c4d5dd;
+      --color-accent-primary: #7c83fd;
+      --color-accent-hover: #6366f1;
+      --color-success: #22c55e;
+      --color-warning: #fcd34d;
+      --color-error: #ef4444;
+
+      /* Spacing */
+      --space-1: 6.4px;
+      --space-2: 8px;
+      --space-3: 9.6px;
+      --space-4: 13.6px;
+      --space-5: 17.28px;
+      --space-6: 57.6px;
+
+      /* Radius */
+      --radius-xs: 16px;
+      --radius-sm: 50px;
+      --radius-md: 12px;
+      --radius-lg: 8px;
+
+      /* Shadow */
+      --shadow-1: rgba(29, 29, 29, 0.05) 0px 8px 17px 0px;
+      --shadow-2: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+      /* Motion */
+      --motion-instant: 250ms;
+      --motion-fast: 650ms;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family-primary);
+      font-size: var(--font-size-base);
+      font-weight: var(--font-weight-base);
+      line-height: var(--line-height-base);
+      background: var(--color-surface-elevated);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      color: var(--color-text-primary);
+    }
+
+    /* ---- TOP NAV ---- */
+    .topnav {
+      background: var(--color-surface-base);
+      color: var(--color-text-secondary);
+      display: flex;
+      align-items: center;
+      padding: 0 var(--space-5);
+      height: 44px;
+      gap: var(--space-6);
+      flex-shrink: 0;
+      box-shadow: var(--shadow-2);
+    }
+
+    .topnav .brand {
+      font-weight: var(--font-weight-bold);
+      font-size: var(--font-size-lg);
+      color: var(--color-accent-primary);
+      letter-spacing: 0.5px;
+    }
+
+    .topnav .nav-links {
+      display: flex;
+      gap: var(--space-5);
+    }
+
+    .topnav .nav-links a {
+      color: var(--color-text-muted);
+      text-decoration: none;
+      font-size: var(--font-size-md);
+      transition: color var(--motion-instant);
+    }
+
+    .topnav .nav-links a:hover {
+      color: var(--color-text-secondary);
+    }
+
+    .topnav .nav-links a:focus-visible {
+      outline: 2px solid var(--color-accent-primary);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* ---- MAIN LAYOUT ---- */
+    .main {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ---- SIDEBAR ---- */
+    .sidebar {
+      width: 260px;
+      background: var(--color-surface-light);
+      border-right: 1px solid var(--color-border-default);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .sidebar-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--color-border-default);
+    }
+
+    .sidebar-tab {
+      flex: 1;
+      padding: var(--space-3) var(--space-2);
+      text-align: center;
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all var(--motion-instant);
+      background: transparent;
+    }
+
+    .sidebar-tab:hover {
+      color: var(--color-accent-primary);
+      background: var(--color-surface-elevated);
+    }
+
+    .sidebar-tab:focus-visible {
+      outline: 2px solid var(--color-accent-primary);
+      outline-offset: -2px;
+    }
+
+    .sidebar-tab.active {
+      color: var(--color-accent-primary);
+      border-bottom-color: var(--color-accent-primary);
+    }
+
+    .sidebar-content {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      padding: 14px 16px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+
+    .sidebar-scroll {
+      overflow-y: auto;
+      flex: 1;
+      padding: 8px 0;
+    }
+
+    /* History items */
+    .history-item {
+      padding: 10px 16px;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: all 0.15s;
+      border-bottom: 1px solid #f3f4f6;
+    }
+
+    .history-item:hover {
+      background: #f5f3ff;
+      border-left-color: #7c83fd;
+    }
+
+    .history-item.active {
+      background: #ede9fe;
+      border-left-color: #7c83fd;
+    }
+
+    .history-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 4px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .history-meta {
+      font-size: 10px;
+      color: #9ca3af;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .history-time {
+      flex: 1;
+    }
+
+    .history-delete {
+      color: #ef4444;
+      cursor: pointer;
+      padding: 2px 4px;
+      border-radius: 4px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .history-item:hover .history-delete {
+      opacity: 1;
+    }
+
+    .history-delete:hover {
+      background: #fee2e2;
+    }
+
+    .history-empty {
+      padding: 40px 20px;
+      text-align: center;
+      color: #9ca3af;
+      font-size: 12px;
+    }
+
+    .level-group {
+      margin-bottom: 4px;
+    }
+
+    .level-label {
+      padding: 8px 16px 4px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .level-badge {
+      background: #7c83fd;
+      color: #fff;
+      border-radius: 10px;
+      padding: 1px 7px;
+      font-size: 10px;
+    }
+
+    .level-desc {
+      padding: 0 16px 6px;
+      font-size: 10px;
+      color: #9ca3af;
+      font-style: italic;
+    }
+
+    .q-item {
+      padding: 7px 16px;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: all 0.15s;
+    }
+
+    .q-item:hover {
+      background: #f5f3ff;
+      border-left-color: #7c83fd;
+    }
+
+    .q-item.active {
+      background: #ede9fe;
+      border-left-color: #7c83fd;
+    }
+
+    .q-item .q-id {
+      font-size: 10px;
+      font-weight: 700;
+      color: #7c83fd;
+      margin-bottom: 2px;
+    }
+
+    .q-item .q-text {
+      font-size: 12px;
+      color: #374151;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .q-item .q-hint {
+      font-size: 10px;
+      color: #9ca3af;
+      margin-top: 2px;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* ---- CHAT AREA ---- */
+    .chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .chat-header .title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+
+    .chat-header .title span {
+      color: #7c83fd;
+    }
+
+    .chat-header .session-info {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .chat-header .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      display: inline-block;
+      margin-right: 6px;
+    }
+
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* ---- MESSAGES ---- */
+    .msg {
+      display: flex;
+      gap: 10px;
+      max-width: 85%;
+    }
+
+    .msg.user {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+
+    .msg.assistant {
+      align-self: flex-start;
+    }
+
+    .msg-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .msg.user .msg-avatar {
+      background: #7c83fd;
+      color: #fff;
+    }
+
+    .msg.assistant .msg-avatar {
+      background: #1a1a2e;
+      color: #7c83fd;
+      font-weight: 700;
+      font-size: 11px;
+    }
+
+    .msg-body {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .msg-bubble {
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .msg.user .msg-bubble {
+      background: #7c83fd;
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .msg.assistant .msg-bubble {
+      background: #fff;
+      color: #1f2937;
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .msg-bubble p {
+      margin-bottom: 8px;
+    }
+
+    .msg-bubble p:last-child {
+      margin-bottom: 0;
+    }
+
+    .msg-bubble ul,
+    .msg-bubble ol {
+      padding-left: 20px;
+      margin-bottom: 8px;
+    }
+
+    .msg-bubble li {
+      margin-bottom: 4px;
+    }
+
+    .msg-bubble strong {
+      font-weight: 600;
+    }
+
+    .msg-bubble code {
+      background: #f3f4f6;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 12px;
+    }
+
+    .msg-bubble pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 12px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 8px 0;
+    }
+
+    .msg-bubble pre code {
+      background: none;
+      color: #f9fafb;
+      padding: 0;
+      font-size: 12px;
+    }
+
+    .msg-bubble blockquote {
+      border-left: 4px solid #7c83fd;
+      padding-left: 12px;
+      margin: 8px 0;
+      color: #6b7280;
+      font-style: italic;
+    }
+
+    .msg-bubble hr {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 12px 0;
+    }
+
+    .msg-bubble a {
+      color: #7c83fd;
+      text-decoration: none;
+    }
+
+    .msg-bubble a:hover {
+      text-decoration: underline;
+    }
+
+    .msg-bubble em {
+      font-style: italic;
+      color: #6b7280;
+    }
+
+    /* Markdown tables */
+    .msg-bubble table.md-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: var(--space-4) 0;
+      font-size: var(--font-size-md);
+      background: var(--color-surface-light);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-1);
+    }
+
+    .msg-bubble table.md-table thead {
+      background: var(--color-surface-base);
+      color: var(--color-text-secondary);
+    }
+
+    .msg-bubble table.md-table th {
+      padding: var(--space-4) var(--space-5);
+      text-align: left;
+      font-weight: var(--font-weight-semibold);
+      font-size: var(--font-size-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .msg-bubble table.md-table td {
+      padding: var(--space-3) var(--space-5);
+      border-bottom: 1px solid var(--color-border-default);
+      color: var(--color-text-primary);
+    }
+
+    .msg-bubble table.md-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .msg-bubble table.md-table tbody tr:hover {
+      background: var(--color-surface-elevated);
+      transition: background var(--motion-instant);
+    }
+
+    /* Headers in message bubble */
+    .msg-bubble h1 {
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-bold);
+      margin: var(--space-5) 0 var(--space-2) 0;
+      color: var(--color-text-primary);
+    }
+
+    .msg-bubble h2 {
+      font-size: var(--font-size-xl);
+      font-weight: var(--font-weight-bold);
+      margin: var(--space-4) 0 var(--space-2) 0;
+      color: var(--color-text-primary);
+    }
+
+    .msg-bubble h3 {
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-semibold);
+      margin: var(--space-4) 0 var(--space-1) 0;
+      color: var(--color-text-inverse);
+    }
+
+    .msg-bubble h1:first-child,
+    .msg-bubble h2:first-child,
+    .msg-bubble h3:first-child {
+      margin-top: 0;
+    }
+
+    /* Inline citations */
+    .msg-bubble sup {
+      color: #7c83fd;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .msg-bubble sup:hover {
+      text-decoration: underline;
+    }
+
+    /* Tool calls */
+    .tool-calls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tool-badge {
+      background: #fef3c7;
+      border: 1px solid #fcd34d;
+      color: #92400e;
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .tool-badge .icon {
+      font-size: 12px;
+    }
+
+    /* Citations */
+    .citations {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .citation-item {
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      border-left: 3px solid var(--color-success);
+      border-radius: var(--radius-lg);
+      padding: var(--space-3) var(--space-4);
+      font-size: var(--font-size-xs);
+      cursor: pointer;
+      transition: all var(--motion-instant);
+    }
+
+    .citation-item:hover {
+      background: #dcfce7;
+      border-left-color: #16a34a;
+      box-shadow: var(--shadow-2);
+      transform: translateX(2px);
+    }
+
+    .citation-item:focus-visible {
+      outline: 2px solid var(--color-accent-primary);
+      outline-offset: 2px;
+    }
+
+    .citation-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .citation-source {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      color: #166534;
+    }
+
+    .citation-index {
+      background: #22c55e;
+      color: white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .citation-confidence {
+      background: #dcfce7;
+      color: #166534;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .citation-snippet {
+      color: #166534;
+      line-height: 1.5;
+      font-size: 11px;
+      font-style: italic;
+      opacity: 0.9;
+    }
+
+    .citation-item.collapsed .citation-snippet {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .citation-item.expanded .citation-snippet {
+      display: block;
+    }
+
+    /* Citation Modal */
+    .citation-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .citation-modal.active {
+      display: flex;
+    }
+
+    .citation-modal-content {
+      background: white;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 800px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .citation-modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .citation-modal-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    .citation-modal-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #9ca3af;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .citation-modal-close:hover {
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+
+    .citation-modal-body {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .citation-modal-body .markdown-content {
+      font-size: 14px;
+      line-height: 1.8;
+      color: #374151;
+    }
+
+    .citation-modal-body .markdown-content h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e5e7eb;
+    }
+
+    .citation-modal-body .markdown-content h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-top: 24px;
+      margin-bottom: 12px;
+    }
+
+    .citation-modal-body .markdown-content h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #374151;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    .citation-modal-body .markdown-content p {
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
+
+    .citation-modal-body .markdown-content ul,
+    .citation-modal-body .markdown-content ol {
+      margin-bottom: 12px;
+      padding-left: 24px;
+    }
+
+    .citation-modal-body .markdown-content li {
+      margin-bottom: 6px;
+      line-height: 1.6;
+    }
+
+    .citation-modal-body .markdown-content strong {
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .citation-modal-body .markdown-content em {
+      font-style: italic;
+      color: #6b7280;
+    }
+
+    .citation-modal-body .markdown-content code {
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: #7c83fd;
+    }
+
+    .citation-modal-body .markdown-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: 16px;
+    }
+
+    .citation-modal-body .markdown-content pre code {
+      background: none;
+      color: #f9fafb;
+      padding: 0;
+    }
+
+    .citation-modal-body .markdown-content blockquote {
+      border-left: 4px solid #7c83fd;
+      padding-left: 16px;
+      margin: 16px 0;
+      color: #6b7280;
+      font-style: italic;
+    }
+
+    .citation-modal-body .markdown-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+    }
+
+    .citation-modal-body .markdown-content th {
+      background: #f9fafb;
+      padding: 10px;
+      text-align: left;
+      font-weight: 600;
+      border: 1px solid #e5e7eb;
+    }
+
+    .citation-modal-body .markdown-content td {
+      padding: 10px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .citation-modal-body .markdown-content a {
+      color: #7c83fd;
+      text-decoration: none;
+    }
+
+    .citation-modal-body .markdown-content a:hover {
+      text-decoration: underline;
+    }
+
+    .citation-modal-body .markdown-content hr {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 24px 0;
+    }
+
+    .citation-modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .citation-modal-info {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .citation-modal-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .citation-modal-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .citation-modal-btn.primary {
+      background: #7c83fd;
+      color: white;
+    }
+
+    .citation-modal-btn.primary:hover {
+      background: #6366f1;
+    }
+
+    .citation-modal-btn.secondary {
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    .citation-modal-btn.secondary:hover {
+      background: #e5e7eb;
+    }
+
+    /* View trace */
+    .view-trace {
+      font-size: 11px;
+      color: #7c83fd;
+      cursor: pointer;
+      text-decoration: underline;
+      margin-top: 2px;
+    }
+
+    .trace-panel {
+      display: none;
+      margin-top: 8px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    .trace-panel.visible {
+      display: block;
+    }
+
+    .trace-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+
+    .trace-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .trace-label {
+      font-weight: 600;
+      color: #374151;
+      min-width: 130px;
+      flex-shrink: 0;
+    }
+
+    .trace-value {
+      color: #6b7280;
+      flex: 1;
+      word-break: break-word;
+    }
+
+    .trace-value.highlight {
+      color: #7c83fd;
+      font-weight: 600;
+    }
+
+    .trace-value code {
+      background: #fff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 10px;
+    }
+
+    /* Typing indicator */
+    .typing {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 12px 16px;
+      background: #fff;
+      border-radius: 16px;
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .typing span {
+      width: 7px;
+      height: 7px;
+      background: #9ca3af;
+      border-radius: 50%;
+      animation: bounce 1.2s infinite;
+    }
+
+    .typing span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      60%,
+      100% {
+        transform: translateY(0);
+      }
+
+      30% {
+        transform: translateY(-6px);
+      }
+    }
+
+    /* ---- BOTTOM BAR ---- */
+    .bottom-bar {
+      background: #fff;
+      border-top: 1px solid #e5e7eb;
+      padding: 12px 20px;
+      flex-shrink: 0;
+    }
+
+    .level-selector {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+
+    .level-selector label {
+      font-size: 12px;
+      color: #6b7280;
+      margin-right: 4px;
+    }
+
+    .level-btn {
+      padding: var(--space-1) var(--space-4);
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--color-border-default);
+      background: var(--color-surface-light);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      cursor: pointer;
+      color: var(--color-text-muted);
+      transition: all var(--motion-instant);
+      font-family: var(--font-family-primary);
+    }
+
+    .level-btn:hover {
+      border-color: var(--color-accent-primary);
+      color: var(--color-accent-primary);
+      transform: translateY(-1px);
+    }
+
+    .level-btn:focus-visible {
+      outline: 2px solid var(--color-accent-primary);
+      outline-offset: 2px;
+    }
+
+    .level-btn:active {
+      transform: translateY(0);
+    }
+
+    .level-btn.active {
+      background: var(--color-accent-primary);
+      border-color: var(--color-accent-primary);
+      color: var(--color-text-secondary);
+    }
+
+    .level-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+    }
+
+    .input-row textarea {
+      flex: 1;
+      border: 1.5px solid #d1d5db;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 14px;
+      resize: none;
+      outline: none;
+      font-family: inherit;
+      line-height: 1.5;
+      max-height: 120px;
+      transition: border-color 0.15s;
+    }
+
+    .input-row textarea:focus {
+      border-color: #7c83fd;
+    }
+
+    .send-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--color-accent-primary);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--motion-instant);
+      flex-shrink: 0;
+    }
+
+    .send-btn:hover {
+      background: var(--color-accent-hover);
+      transform: scale(1.05);
+    }
+
+    .send-btn:focus-visible {
+      outline: 2px solid var(--color-accent-primary);
+      outline-offset: 2px;
+    }
+
+    .send-btn:active {
+      transform: scale(0.95);
+    }
+
+    .send-btn:disabled {
+      background: var(--color-border-default);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .send-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: var(--color-text-secondary);
+    }
+
+    /* Welcome */
+    .welcome {
+      text-align: center;
+      padding: 40px 20px;
+      color: #9ca3af;
+    }
+
+    .welcome .logo {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .welcome h2 {
+      font-size: 20px;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+
+    .welcome p {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="topnav">
+    <span class="brand">GeekBrain AI</span>
+    <div class="nav-links">
+      <a href="#">Training</a>
+      <a href="#">AIOps</a>
+      <a href="#">IaS</a>
+      <a href="#">TechX</a>
+    </div>
+  </nav>
+
+  <div class="main">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-tabs">
+        <div class="sidebar-tab active" onclick="switchTab('questions', this)">Questions</div>
+        <div class="sidebar-tab" onclick="switchTab('history', this)">History</div>
+      </div>
+      <div class="sidebar-content">
+        <div id="questionsTab" class="sidebar-scroll">
+          <div style="padding:20px;text-align:center;color:#9ca3af;font-size:13px;">Loading questions...</div>
+        </div>
+        <div id="historyTab" class="sidebar-scroll" style="display:none;">
+          <div class="history-empty">No chat history yet</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CHAT -->
+    <div class="chat-container">
+      <div class="chat-header">
+        <div>
+          <div class="title"><span>GeekBrain</span> AI</div>
+          <div class="session-info"><span class="status-dot"></span>Session: <span id="sessionId">initializing...</span>
+          </div>
+        </div>
+        <button onclick="clearChat()"
+          style="background:none;border:1px solid #e5e7eb;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;color:#6b7280;">New
+          Chat</button>
+      </div>
+
+      <div class="messages" id="messages">
+        <div class="welcome">
+          <div class="logo">🤖</div>
+          <h2>GeekBrain AI Assistant</h2>
+          <p>Ask me anything about GeekBrain's services, incidents, costs, and SLA metrics.<br />Select a question from
+            the sidebar or type your own below.</p>
+        </div>
+      </div>
+
+      <div class="bottom-bar">
+        <div class="level-selector">
+          <label>Level:</label>
+          <button class="level-btn active" data-level="auto" onclick="setLevel('auto', this)">Auto</button>
+          <button class="level-btn" data-level="1" onclick="setLevel('1', this)">L1</button>
+          <button class="level-btn" data-level="2" onclick="setLevel('2', this)">L2</button>
+          <button class="level-btn" data-level="3" onclick="setLevel('3', this)">L3</button>
+          <button class="level-btn" data-level="4" onclick="setLevel('4', this)">L4</button>
+          <button class="level-btn" data-level="5" onclick="setLevel('5', this)">L5</button>
+        </div>
+        <div class="input-row">
+          <textarea id="userInput" placeholder="Ask a question about GeekBrain..." rows="1" onkeydown="handleKey(event)"
+            oninput="autoResize(this)"></textarea>
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+            <svg viewBox="0 0 24 24">
+              <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Citation Modal -->
+  <div class="citation-modal" id="citationModal" onclick="closeCitationModal(event)">
+    <div class="citation-modal-content" onclick="event.stopPropagation()">
+      <div class="citation-modal-header">
+        <div class="citation-modal-title">
+          <span>📄</span>
+          <span id="modalFileName">Document</span>
+        </div>
+        <button class="citation-modal-close" onclick="closeCitationModal()">&times;</button>
+      </div>
+      <div class="citation-modal-body">
+        <div id="modalContent" class="markdown-content">Loading...</div>
+      </div>
+      <div class="citation-modal-footer">
+        <div class="citation-modal-info">
+          <span id="modalConfidence"></span>
+        </div>
+        <div class="citation-modal-actions">
+          <button class="citation-modal-btn secondary" onclick="closeCitationModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let sessionId = null;
+    let ws = null;
+    let currentLevel = 'auto';
+    let allQuestions = {};
+    let chatHistory = []; // Store chat messages
+    let allConversations = []; // Store all conversations
+    let currentConversationId = null;
+
+    // ---- INIT ----
+    async function init() {
+      // Load conversations from localStorage
+      loadAllConversations();
+
+      // Load current chat history
+      loadChatHistory();
+
+      // Create session
+      const res = await fetch('/api/session', { method: 'POST' });
+      const data = await res.json();
+      sessionId = data.session_id;
+      document.getElementById('sessionId').textContent = sessionId;
+
+      // Connect WebSocket
+      connectWS();
+
+      // Load questions
+      const qRes = await fetch('/api/questions');
+      allQuestions = await qRes.json();
+      renderSidebar(allQuestions);
+
+      // Render history sidebar
+      renderHistorySidebar();
+
+      // Restore chat history UI
+      if (chatHistory.length > 0) {
+        restoreChatHistory();
+      }
+    }
+
+    function connectWS() {
+      const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+      ws = new WebSocket(`${proto}://${location.host}/ws/${sessionId}`);
+      ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        removeTyping();
+        appendAssistantMessage(data);
+        setInputEnabled(true);
+      };
+      ws.onclose = () => {
+        setTimeout(connectWS, 2000);
+      };
+    }
+
+    // ---- SIDEBAR ----
+    function switchTab(tab, el) {
+      // Update tab buttons
+      document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+
+      // Show/hide content
+      if (tab === 'questions') {
+        document.getElementById('questionsTab').style.display = 'block';
+        document.getElementById('historyTab').style.display = 'none';
+      } else {
+        document.getElementById('questionsTab').style.display = 'none';
+        document.getElementById('historyTab').style.display = 'block';
+      }
+    }
+
+    function renderSidebar(questions) {
+      const container = document.getElementById('questionsTab');
+      container.innerHTML = '';
+      const levelNames = { 1: 'Level 1', 2: 'Level 2', 3: 'Level 3', 4: 'Level 4', 5: 'Level 5' };
+
+      for (const [level, data] of Object.entries(questions)) {
+        const group = document.createElement('div');
+        group.className = 'level-group';
+        group.innerHTML = `
+      <div class="level-label">
+        <span class="level-badge">L${level}</span>
+        ${levelNames[level] || 'Level ' + level}
+      </div>
+      <div class="level-desc">${data.description || ''}</div>
+    `;
+        for (const item of data.items) {
+          const el = document.createElement('div');
+          el.className = 'q-item';
+          el.innerHTML = `
+        <div class="q-id">${item.id}</div>
+        <div class="q-text">${item.text}</div>
+        ${item.hint ? `<div class="q-hint">${item.hint}</div>` : ''}
+      `;
+          el.onclick = () => {
+            document.querySelectorAll('.q-item').forEach(e => e.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('userInput').value = item.text;
+            autoResize(document.getElementById('userInput'));
+            document.getElementById('userInput').focus();
+          };
+          group.appendChild(el);
+        }
+        container.appendChild(group);
+      }
+    }
+
+    function renderHistorySidebar() {
+      const container = document.getElementById('historyTab');
+
+      if (allConversations.length === 0) {
+        container.innerHTML = '<div class="history-empty">No chat history yet<br/>Start a conversation!</div>';
+        return;
+      }
+
+      container.innerHTML = '';
+
+      // Sort by timestamp (newest first)
+      const sorted = [...allConversations].sort((a, b) => b.timestamp - a.timestamp);
+
+      sorted.forEach(conv => {
+        const el = document.createElement('div');
+        el.className = 'history-item';
+        if (conv.id === currentConversationId) {
+          el.classList.add('active');
+        }
+
+        const timeStr = formatTime(conv.timestamp);
+        const title = conv.title || 'Untitled conversation';
+        const messageCount = conv.messages.length;
+
+        el.innerHTML = `
+          <div class="history-title">${escapeHtml(title)}</div>
+          <div class="history-meta">
+            <span class="history-time">${timeStr} • ${messageCount} msgs</span>
+            <span class="history-delete" onclick="deleteConversation('${conv.id}', event)">🗑️</span>
+          </div>
+        `;
+
+        el.onclick = (e) => {
+          if (!e.target.classList.contains('history-delete')) {
+            loadConversation(conv.id);
+          }
+        };
+
+        container.appendChild(el);
+      });
+    }
+
+    function formatTime(timestamp) {
+      const now = Date.now();
+      const diff = now - timestamp;
+      const minutes = Math.floor(diff / 60000);
+      const hours = Math.floor(diff / 3600000);
+      const days = Math.floor(diff / 86400000);
+
+      if (minutes < 1) return 'Just now';
+      if (minutes < 60) return `${minutes}m ago`;
+      if (hours < 24) return `${hours}h ago`;
+      if (days < 7) return `${days}d ago`;
+      return new Date(timestamp).toLocaleDateString();
+    }
+
+    // ---- LEVEL SELECTOR ----
+    function setLevel(level, btn) {
+      currentLevel = level;
+      document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    // ---- SEND MESSAGE ----
+    function sendMessage() {
+      const input = document.getElementById('userInput');
+      const text = input.value.trim();
+      if (!text || !ws || ws.readyState !== WebSocket.OPEN) return;
+
+      appendUserMessage(text);
+      input.value = '';
+      autoResize(input);
+      setInputEnabled(false);
+      showTyping();
+
+      ws.send(JSON.stringify({ message: text, level: currentLevel }));
+    }
+
+    function handleKey(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    }
+
+    function autoResize(el) {
+      el.style.height = 'auto';
+      el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+    }
+
+    function setInputEnabled(enabled) {
+      document.getElementById('userInput').disabled = !enabled;
+      document.getElementById('sendBtn').disabled = !enabled;
+    }
+
+    // ---- MESSAGES ----
+    function appendUserMessage(text) {
+      const msgs = document.getElementById('messages');
+      // Remove welcome if present
+      const welcome = msgs.querySelector('.welcome');
+      if (welcome) welcome.remove();
+
+      const div = document.createElement('div');
+      div.className = 'msg user';
+      div.innerHTML = `
+    <div class="msg-avatar">👤</div>
+    <div class="msg-body">
+      <div class="msg-bubble">${escapeHtml(text)}</div>
+    </div>
+  `;
+      msgs.appendChild(div);
+      scrollToBottom();
+
+      // Save to history
+      chatHistory.push({ role: 'user', content: text, timestamp: Date.now() });
+      saveChatHistory();
+    }
+
+    function appendAssistantMessage(data) {
+      const msgs = document.getElementById('messages');
+      const div = document.createElement('div');
+      div.className = 'msg assistant';
+
+      let toolHtml = '';
+      if (data.tool_calls && data.tool_calls.length > 0) {
+        const badges = data.tool_calls.map(t => `
+      <span class="tool-badge">
+        <span class="icon">${t.tool.includes('Database') ? '🗄️' : '📡'}</span>
+        ${escapeHtml(t.tool)}: <em>${escapeHtml(String(t.input).substring(0, 50))}${String(t.input).length > 50 ? '...' : ''}</em>
+      </span>
+    `).join('');
+        toolHtml = `<div class="tool-calls">${badges}</div>`;
+      }
+
+      let citHtml = '';
+      if (data.citations && data.citations.length > 0) {
+        const citItems = data.citations.map(c => {
+          // Handle both old format (string) and new format (object)
+          if (typeof c === 'string') {
+            return `<div class="citation-item collapsed">
+              <div class="citation-header">
+                <span class="citation-source">📄 ${escapeHtml(c)}</span>
+              </div>
+            </div>`;
+          } else {
+            // Store citation data in a safer way
+            const citId = 'cit_' + Math.random().toString(36).substr(2, 9);
+            window[citId] = c; // Store in global scope
+            return `<div class="citation-item collapsed" onclick="showCitationModal('${citId}')" style="cursor: pointer;">
+              <div class="citation-header">
+                <span class="citation-source">
+                  <span class="citation-index">${c.index}</span>
+                  📄 ${escapeHtml(c.file)}
+                </span>
+                <span class="citation-confidence">${(c.confidence * 100).toFixed(0)}%</span>
+              </div>
+              <div class="citation-snippet">"${escapeHtml(c.snippet)}"</div>
+            </div>`;
+          }
+        }).join('');
+        citHtml = `<div class="citations">${citItems}</div>`;
+      }
+
+      // Build trace panel
+      let traceHtml = '';
+      if (data.trace) {
+        const t = data.trace;
+        traceHtml = `<div class="trace-panel">
+          <div class="trace-row">
+            <span class="trace-label">Model:</span>
+            <span class="trace-value"><code>${escapeHtml(t.model || 'Unknown')}</code></span>
+          </div>
+          ${t.query_rewritten ? `
+          <div class="trace-row">
+            <span class="trace-label">Query Rewriting:</span>
+            <span class="trace-value highlight">✓ Applied</span>
+          </div>
+          <div class="trace-row">
+            <span class="trace-label">Original:</span>
+            <span class="trace-value">"${escapeHtml(t.original_query)}"</span>
+          </div>
+          <div class="trace-row">
+            <span class="trace-label">Rewritten:</span>
+            <span class="trace-value">"${escapeHtml(t.rewritten_query)}"</span>
+          </div>
+          ` : ''}
+          <div class="trace-row">
+            <span class="trace-label">RAG Retrieval:</span>
+            <span class="trace-value ${t.rag_used ? 'highlight' : ''}">${t.rag_used ? '✓ Used' : '✗ Not used'}</span>
+          </div>
+          ${t.rag_used ? `
+          <div class="trace-row">
+            <span class="trace-label">Citations Found:</span>
+            <span class="trace-value">${t.num_citations} document(s)</span>
+          </div>
+          ` : ''}
+          <div class="trace-row">
+            <span class="trace-label">Tool Calls:</span>
+            <span class="trace-value ${t.tool_calls_made > 0 ? 'highlight' : ''}">${t.tool_calls_made > 0 ? `✓ ${t.tool_calls_made} call(s)` : '✗ None'}</span>
+          </div>
+          ${t.error ? `
+          <div class="trace-row">
+            <span class="trace-label">Error:</span>
+            <span class="trace-value" style="color: #dc2626;">${escapeHtml(t.error)}</span>
+          </div>
+          ` : ''}
+        </div>`;
+      }
+
+      div.innerHTML = `
+    <div class="msg-avatar">GB</div>
+    <div class="msg-body">
+      ${toolHtml}
+      <div class="msg-bubble">${formatMarkdown(data.answer)}</div>
+      ${citHtml}
+      <span class="view-trace" onclick="toggleTrace(this)">View trace →</span>
+      ${traceHtml}
+    </div>
+  `;
+      msgs.appendChild(div);
+      scrollToBottom();
+
+      // Save to history
+      chatHistory.push({
+        role: 'assistant',
+        content: data.answer,
+        tool_calls: data.tool_calls || [],
+        citations: data.citations || [],
+        trace: data.trace || {},
+        timestamp: Date.now()
+      });
+      saveChatHistory();
+    }
+
+    function showTyping() {
+      const msgs = document.getElementById('messages');
+      const div = document.createElement('div');
+      div.className = 'msg assistant';
+      div.id = 'typingIndicator';
+      div.innerHTML = `
+    <div class="msg-avatar">GB</div>
+    <div class="msg-body">
+      <div class="typing"><span></span><span></span><span></span></div>
+    </div>
+  `;
+      msgs.appendChild(div);
+      scrollToBottom();
+    }
+
+    function removeTyping() {
+      const el = document.getElementById('typingIndicator');
+      if (el) el.remove();
+    }
+
+    function scrollToBottom() {
+      const msgs = document.getElementById('messages');
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    function clearChat() {
+      const msgs = document.getElementById('messages');
+      msgs.innerHTML = `
+    <div class="welcome">
+      <div class="logo">🤖</div>
+      <h2>GeekBrain AI Assistant</h2>
+      <p>Ask me anything about GeekBrain's services, incidents, costs, and SLA metrics.<br/>Select a question from the sidebar or type your own below.</p>
+    </div>
+  `;
+      // Clear history
+      chatHistory = [];
+      currentConversationId = null;
+      saveChatHistory();
+
+      // Update sidebar
+      renderHistorySidebar();
+
+      // Reset session
+      fetch('/api/session', { method: 'POST' }).then(r => r.json()).then(d => {
+        sessionId = d.session_id;
+        document.getElementById('sessionId').textContent = sessionId;
+        connectWS();
+      });
+    }
+
+    function toggleTrace(el) {
+      const tracePanel = el.nextElementSibling;
+      if (tracePanel && tracePanel.classList.contains('trace-panel')) {
+        if (tracePanel.classList.contains('visible')) {
+          tracePanel.classList.remove('visible');
+          el.textContent = 'View trace →';
+        } else {
+          tracePanel.classList.add('visible');
+          el.textContent = 'Hide trace ↑';
+        }
+      }
+    }
+
+    function toggleCitation(el) {
+      if (el.classList.contains('collapsed')) {
+        el.classList.remove('collapsed');
+        el.classList.add('expanded');
+      } else {
+        el.classList.remove('expanded');
+        el.classList.add('collapsed');
+      }
+    }
+
+    // Simple markdown parser
+    function parseMarkdown(text) {
+      if (!text) return 'Content not available';
+
+      let html = text;
+
+      // Remove YAML frontmatter (--- at start and end)
+      html = html.replace(/^---[\s\S]*?---\n*/m, '');
+
+      // Escape HTML first to prevent XSS
+      html = html.replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+      // Headers (must be before other replacements)
+      html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+      html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+      html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+
+      // Horizontal rules
+      html = html.replace(/^---$/gm, '<hr>');
+      html = html.replace(/^\*\*\*$/gm, '<hr>');
+
+      // Bold and italic (must be before links)
+      html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+      html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+      html = html.replace(/___(.+?)___/g, '<strong><em>$1</em></strong>');
+      html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
+      html = html.replace(/_(.+?)_/g, '<em>$1</em>');
+
+      // Inline code (before code blocks)
+      html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+      // Code blocks
+      html = html.replace(/```[\s\S]*?```/g, function (match) {
+        const code = match.replace(/```(\w*)\n?/, '').replace(/```$/, '');
+        return '<pre><code>' + code + '</code></pre>';
+      });
+
+      // Links
+      html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+
+      // Blockquotes
+      html = html.replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>');
+
+      // Unordered lists
+      html = html.replace(/^\* (.+)$/gm, '<li>$1</li>');
+      html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+      html = html.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
+
+      // Ordered lists
+      html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
+
+      // Tables (basic support)
+      html = html.replace(/\|(.+)\|/g, function (match) {
+        const cells = match.split('|').filter(c => c.trim());
+        const cellTags = cells.map(c => {
+          if (c.match(/^[\s:-]+$/)) return null; // Skip separator row
+          return '<td>' + c.trim() + '</td>';
+        }).filter(c => c);
+        if (cellTags.length > 0) {
+          return '<tr>' + cellTags.join('') + '</tr>';
+        }
+        return match;
+      });
+      html = html.replace(/(<tr>.*<\/tr>\n?)+/g, '<table>$&</table>');
+
+      // Paragraphs (split by double newlines)
+      const lines = html.split('\n');
+      let inBlock = false;
+      let result = [];
+      let paragraph = [];
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+
+        // Check if we're in a block element
+        if (line.match(/^<(h[123]|ul|ol|table|pre|blockquote|hr)/)) {
+          if (paragraph.length > 0) {
+            result.push('<p>' + paragraph.join(' ') + '</p>');
+            paragraph = [];
+          }
+          result.push(line);
+          inBlock = true;
+        } else if (line.match(/<\/(h[123]|ul|ol|table|pre|blockquote)>/)) {
+          result.push(line);
+          inBlock = false;
+        } else if (inBlock) {
+          result.push(line);
+        } else if (line === '') {
+          if (paragraph.length > 0) {
+            result.push('<p>' + paragraph.join(' ') + '</p>');
+            paragraph = [];
+          }
+        } else {
+          paragraph.push(line);
+        }
+      }
+
+      // Add remaining paragraph
+      if (paragraph.length > 0) {
+        result.push('<p>' + paragraph.join(' ') + '</p>');
+      }
+
+      return result.join('\n');
+    }
+
+    function showCitationModal(citId) {
+      const citationData = window[citId];
+      if (!citationData) {
+        console.error('Citation data not found:', citId);
+        return;
+      }
+
+      const modal = document.getElementById('citationModal');
+      const modalFileName = document.getElementById('modalFileName');
+      const modalContent = document.getElementById('modalContent');
+      const modalConfidence = document.getElementById('modalConfidence');
+
+      // Set modal content
+      modalFileName.textContent = citationData.file;
+
+      // Parse markdown and render as HTML
+      const parsedContent = parseMarkdown(citationData.full_content || '');
+      modalContent.innerHTML = parsedContent;
+      modalContent.className = 'markdown-content'; // Change from <pre> styling to markdown styling
+
+      modalConfidence.textContent = `Confidence: ${(citationData.confidence * 100).toFixed(0)}% | Retrieved from knowledge base`;
+
+      // Show modal
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCitationModal(event) {
+      if (event && event.target.classList.contains('citation-modal-content')) {
+        return; // Don't close if clicking inside modal content
+      }
+      const modal = document.getElementById('citationModal');
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        closeCitationModal();
+      }
+    });
+
+    // ---- LOCALSTORAGE ----
+    function saveChatHistory() {
+      try {
+        localStorage.setItem('geekbrain_chat_history', JSON.stringify(chatHistory));
+        localStorage.setItem('geekbrain_chat_timestamp', Date.now().toString());
+
+        // Save to conversations list
+        saveCurrentConversation();
+      } catch (e) {
+        console.error('Failed to save chat history:', e);
+      }
+    }
+
+    function saveCurrentConversation() {
+      if (chatHistory.length === 0) return;
+
+      // Generate conversation ID if new
+      if (!currentConversationId) {
+        currentConversationId = 'conv_' + Date.now();
+      }
+
+      // Get title from first user message
+      const firstUserMsg = chatHistory.find(m => m.role === 'user');
+      const title = firstUserMsg ? firstUserMsg.content.substring(0, 60) : 'New conversation';
+
+      // Find existing conversation or create new
+      const existingIndex = allConversations.findIndex(c => c.id === currentConversationId);
+      const conversation = {
+        id: currentConversationId,
+        title: title,
+        messages: chatHistory,
+        timestamp: Date.now()
+      };
+
+      if (existingIndex >= 0) {
+        allConversations[existingIndex] = conversation;
+      } else {
+        allConversations.push(conversation);
+      }
+
+      // Save to localStorage
+      localStorage.setItem('geekbrain_conversations', JSON.stringify(allConversations));
+
+      // Update history sidebar
+      renderHistorySidebar();
+    }
+
+    function loadAllConversations() {
+      try {
+        const saved = localStorage.getItem('geekbrain_conversations');
+        if (saved) {
+          allConversations = JSON.parse(saved);
+          console.log('Loaded', allConversations.length, 'conversations');
+        }
+      } catch (e) {
+        console.error('Failed to load conversations:', e);
+      }
+    }
+
+    function loadConversation(convId) {
+      const conv = allConversations.find(c => c.id === convId);
+      if (!conv) return;
+
+      // Set as current
+      currentConversationId = convId;
+      chatHistory = conv.messages;
+
+      // Clear and restore UI
+      const msgs = document.getElementById('messages');
+      msgs.innerHTML = '';
+      restoreChatHistory();
+
+      // Update sidebar
+      renderHistorySidebar();
+
+      console.log('Loaded conversation:', convId);
+    }
+
+    function deleteConversation(convId, event) {
+      event.stopPropagation();
+
+      if (!confirm('Delete this conversation?')) return;
+
+      // Remove from list
+      allConversations = allConversations.filter(c => c.id !== convId);
+      localStorage.setItem('geekbrain_conversations', JSON.stringify(allConversations));
+
+      // If deleting current conversation, clear chat
+      if (convId === currentConversationId) {
+        clearChat();
+      }
+
+      // Update sidebar
+      renderHistorySidebar();
+    }
+
+    function loadChatHistory() {
+      try {
+        const saved = localStorage.getItem('geekbrain_chat_history');
+        const timestamp = localStorage.getItem('geekbrain_chat_timestamp');
+
+        if (saved) {
+          // Check if history is less than 24 hours old
+          const age = Date.now() - parseInt(timestamp || '0');
+          const maxAge = 24 * 60 * 60 * 1000; // 24 hours
+
+          if (age < maxAge) {
+            chatHistory = JSON.parse(saved);
+            console.log('Loaded chat history:', chatHistory.length, 'messages');
+          } else {
+            // Clear old history
+            console.log('Chat history expired, clearing...');
+            localStorage.removeItem('geekbrain_chat_history');
+            localStorage.removeItem('geekbrain_chat_timestamp');
+          }
+        }
+      } catch (e) {
+        console.error('Failed to load chat history:', e);
+      }
+    }
+
+    function restoreChatHistory() {
+      const msgs = document.getElementById('messages');
+      // Remove welcome
+      const welcome = msgs.querySelector('.welcome');
+      if (welcome) welcome.remove();
+
+      // Restore messages
+      chatHistory.forEach(msg => {
+        if (msg.role === 'user') {
+          const div = document.createElement('div');
+          div.className = 'msg user';
+          div.innerHTML = `
+            <div class="msg-avatar">👤</div>
+            <div class="msg-body">
+              <div class="msg-bubble">${escapeHtml(msg.content)}</div>
+            </div>
+          `;
+          msgs.appendChild(div);
+        } else if (msg.role === 'assistant') {
+          // Reconstruct assistant message
+          appendAssistantMessage({
+            answer: msg.content,
+            tool_calls: msg.tool_calls || [],
+            citations: msg.citations || [],
+            trace: msg.trace || {}
+          });
+        }
+      });
+
+      scrollToBottom();
+      console.log('Restored', chatHistory.length, 'messages');
+    }
+
+    // ---- UTILS ----
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function formatMarkdown(text) {
+      // Remove YAML frontmatter first
+      let html = text.replace(/^---[\s\S]*?---\n*/m, '');
+
+      // Escape HTML first
+      html = html
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+      // Convert inline citations [1] to superscript FIRST (before other replacements)
+      html = html.replace(/\[(\d+)\]/g, '<sup>[$1]</sup>');
+
+      // Headers (must be before other replacements)
+      html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+      html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+      html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+
+      // Horizontal rules
+      html = html.replace(/^---$/gm, '<hr>');
+      html = html.replace(/^\*\*\*$/gm, '<hr>');
+
+      // Bold and italic (must be before links)
+      html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+      html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+      html = html.replace(/___(.+?)___/g, '<strong><em>$1</em></strong>');
+      html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
+      html = html.replace(/_(.+?)_/g, '<em>$1</em>');
+
+      // Inline code (before code blocks)
+      html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+      // Code blocks
+      html = html.replace(/```[\s\S]*?```/g, function (match) {
+        const code = match.replace(/```(\w*)\n?/, '').replace(/```$/, '');
+        return '<pre><code>' + code + '</code></pre>';
+      });
+
+      // Links
+      html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+
+      // Blockquotes
+      html = html.replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>');
+
+      // Convert markdown tables to HTML tables
+      html = html.replace(/(\|.+\|\n)+/g, function (match) {
+        const lines = match.trim().split('\n');
+        if (lines.length < 2) return match;
+
+        let tableHtml = '<table class="md-table">';
+
+        // Header row
+        const headers = lines[0].split('|').filter(cell => cell.trim());
+        tableHtml += '<thead><tr>';
+        headers.forEach(header => {
+          tableHtml += `<th>${header.trim()}</th>`;
+        });
+        tableHtml += '</tr></thead>';
+
+        // Body rows (skip separator line)
+        tableHtml += '<tbody>';
+        for (let i = 1; i < lines.length; i++) {
+          const line = lines[i];
+          // Skip separator line (contains only |, -, :, and spaces)
+          if (/^[\|\-\:\s]+$/.test(line)) continue;
+
+          const cells = line.split('|').filter(cell => cell.trim());
+          if (cells.length === 0) continue;
+
+          tableHtml += '<tr>';
+          cells.forEach(cell => {
+            tableHtml += `<td>${cell.trim()}</td>`;
+          });
+          tableHtml += '</tr>';
+        }
+        tableHtml += '</tbody></table>';
+
+        return tableHtml;
+      });
+
+      // Unordered lists
+      html = html.replace(/^\* (.+)$/gm, '<li>$1</li>');
+      html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+
+      // Ordered lists
+      html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
+
+      // Wrap consecutive <li> in <ul> or <ol>
+      html = html.replace(/(<li>.*?<\/li>\n?)+/g, function (match) {
+        return `<ul>${match}</ul>`;
+      });
+
+      // Paragraphs (split by double newlines)
+      const lines = html.split('\n');
+      let inBlock = false;
+      let result = [];
+      let paragraph = [];
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+
+        // Check if we're in a block element
+        if (line.match(/^<(h[123]|ul|ol|table|pre|blockquote|hr)/)) {
+          if (paragraph.length > 0) {
+            result.push('<p>' + paragraph.join(' ') + '</p>');
+            paragraph = [];
+          }
+          result.push(line);
+          inBlock = true;
+        } else if (line.match(/<\/(h[123]|ul|ol|table|pre|blockquote)>/)) {
+          result.push(line);
+          inBlock = false;
+        } else if (inBlock) {
+          result.push(line);
+        } else if (line === '') {
+          if (paragraph.length > 0) {
+            result.push('<p>' + paragraph.join(' ') + '</p>');
+            paragraph = [];
+          }
+        } else {
+          paragraph.push(line);
+        }
+      }
+
+      // Add remaining paragraph
+      if (paragraph.length > 0) {
+        result.push('<p>' + paragraph.join(' ') + '</p>');
+      }
+
+      return result.join('\n');
+    }
+
+    init();
+  </script>
+</body>
+
+</html>
