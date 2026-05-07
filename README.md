@@ -238,10 +238,26 @@ python data_package/scripts/seed_data.py
 
 ## 📚 Documentation
 
-- **TESTING.md**: Comprehensive testing guide
-- **W4_learner_guide.md**: Learner guide (English)
-- **W4_learner_guide_vi.md**: Learner guide (Vietnamese)
-- **W4_project_announcement.md**: Project announcement
+### User Documentation
+- **README.md** - Complete guide (this file)
+- **QUICK_START.md** - Quick reference
+- **SETUP.md** - Setup instructions
+
+### System Documentation
+- **SYSTEM_FLOW.md** - Detailed system flow & architecture (English)
+- **LUONG_HOAT_DONG.md** - System flow explanation (Vietnamese)
+- **PROJECT_SUMMARY.md** - Project overview
+
+### Developer Documentation
+- **DESIGN_SYSTEM.md** - Design reference
+- **TESTING.md** - Test guide
+- Code comments in source files
+
+### Learner Documentation
+- **W4_learner_guide.md** - English
+- **W4_learner_guide_vi.md** - Vietnamese
+- **W4_project_announcement.md** - English
+- **W4_project_announcement_vi.md** - Vietnamese
 
 ---
 

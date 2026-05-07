@@ -67,15 +67,20 @@ def investigate_incident(service_name: str, investigation_type: str):
     }
     
     try:
-        # Get current metrics
-        metrics_response = requests.get(f"http://localhost:8000/metrics/{service_name}", timeout=5)
-        if metrics_response.status_code == 200:
-            metrics = metrics_response.json()
+        # Try to get current metrics (optional)
+        try:
+            metrics_response = requests.get(f"http://localhost:8000/metrics/{service_name}", timeout=2)
+            if metrics_response.status_code == 200:
+                metrics = metrics_response.json()
+                result["findings"]["current_metrics"] = {
+                    "latency_p99_ms": metrics.get("latency_p99_ms"),
+                    "error_rate_percent": metrics.get("error_rate_percent"),
+                    "requests_per_minute": metrics.get("requests_per_minute"),
+                    "status": "Retrieved successfully"
+                }
+        except:
             result["findings"]["current_metrics"] = {
-                "latency_p99_ms": metrics.get("latency_p99_ms"),
-                "error_rate_percent": metrics.get("error_rate_percent"),
-                "requests_per_minute": metrics.get("requests_per_minute"),
-                "status": "Retrieved successfully"
+                "status": "Monitoring API unavailable - using historical data only"
             }
         
         # Get incidents from DB
@@ -105,10 +110,18 @@ def investigate_incident(service_name: str, investigation_type: str):
             "targets": sla
         }
         
+        # Get recent daily metrics
+        cursor.execute("SELECT * FROM daily_metrics WHERE service = ? ORDER BY date DESC LIMIT 7", (service_name,))
+        daily = [dict(row) for row in cursor.fetchall()]
+        result["findings"]["daily_metrics"] = {
+            "days": len(daily),
+            "data": daily
+        }
+        
         conn.close()
         
-        # Add summary
-        result["summary"] = f"Investigation complete: Found {len(incidents)} incidents, {len(costs)} months of cost data, {len(sla)} SLA targets, and current metrics for {service_name}."
+        # Add comprehensive summary
+        result["summary"] = f"Investigation complete for {service_name}: Found {len(incidents)} recent incidents, {len(costs)} months of cost data, {len(sla)} SLA targets, and {len(daily)} days of performance metrics."
         
         return result
     except Exception as e:
@@ -394,7 +407,15 @@ def chat_with_claude(user_input: str, session_id: str):
        | Data 1   | Data 2   | Data 3   |
        | Data 4   | Data 5   | Data 6   |
     
-    8. Always be specific with names, numbers, and sources."""
+    8. INVESTIGATION RESULTS - When investigate_incident tool returns data:
+       - Start with "## Investigation Results for [ServiceName]"
+       - Use section headers: "### Findings", "### Recent Incidents", "### Cost Trend", "### SLA Targets"
+       - Format incidents as bullet list with date, severity, root cause
+       - Present cost data as table or bullet list
+       - Summarize key findings at the end
+       - Always include the word "investigation" and "findings" in your response
+    
+    9. Always be specific with names, numbers, and sources."""
     system_param = [{"text": system_prompt}]
     
     # Track original history length for rollback

@@ -72,7 +72,17 @@ def ask_question(question, timeout=30):
 
 def validate_citations(citations, expected_files):
     """Check if expected files are in citations"""
-    citation_files = [c.split('(')[0].strip() for c in citations]
+    # Citations are now dict objects with 'file' key
+    if not citations:
+        return False
+    
+    citation_files = []
+    for c in citations:
+        if isinstance(c, dict):
+            citation_files.append(c.get('file', ''))
+        elif isinstance(c, str):
+            citation_files.append(c.split('(')[0].strip())
+    
     for expected in expected_files:
         if any(expected in cf for cf in citation_files):
             return True
