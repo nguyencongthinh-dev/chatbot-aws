@@ -408,25 +408,27 @@ def main():
         print_info("Start with: uv run uvicorn monitoring_api:app --port 8000")
         input("Press Enter to continue anyway, or Ctrl+C to exit...")
     
-    # Create session
-    create_session()
-    
-    # Run tests
+    # Run tests - each level gets a fresh session to avoid history corruption
     results = {}
     
     try:
+        create_session()
         results['L1'] = test_l1_simple_retrieval()
         time.sleep(2)
         
+        create_session()
         results['L2'] = test_l2_advanced_rag()
         time.sleep(2)
         
+        create_session()
         results['L3'] = test_l3_tool_augmented()
         time.sleep(2)
         
+        # L4 needs its own session (multi-turn conversation) - created inside test_l4_memory()
         results['L4'] = test_l4_memory()
         time.sleep(2)
         
+        create_session()
         results['L5'] = test_l5_investigation()
         
     except KeyboardInterrupt:

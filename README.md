@@ -2,6 +2,24 @@
 
 ## 🚀 Quick Start
 
+### Performance Note ⚡
+**NEW in v1.3.0**: Phase 1 + Phase 2 + Phase 3 optimizations!
+- **125x faster** RAG search (500ms → 4ms)
+- **11.7x faster** investigations (200ms → 17ms)
+- **1500x faster** repeated questions (1500ms → 0.134ms)
+- **3-5000x faster** total response time (depending on cache hit)
+- **50-70% fewer** API calls
+
+**6 optimizations implemented:**
+1. ✅ KB Cache (memory)
+2. ✅ RAG Cache (LRU)
+3. ✅ Smart Rewriting
+4. ✅ DB Connection Pool
+5. ✅ Parallel Execution
+6. ✅ Response Caching
+
+See `PERFORMANCE_OPTIMIZATION.md`, `PHASE2_RESULTS.md`, and `PHASE3_RESULTS.md` for details.
+
 ### 1. Setup environment variables
 ```bash
 # Copy example file
@@ -132,6 +150,25 @@ python data_package/scripts/test_quick.py
 ---
 
 ## 🔧 Troubleshooting
+
+### Issue: ExpiredTokenException ⚠️
+**Error**: `The security token included in the request is expired`
+
+**Solution**:
+```bash
+# 1. Check credentials status
+python check_aws_credentials.py
+
+# 2. Update .env with new credentials (see FIX_EXPIRED_TOKEN.md)
+notepad .env
+
+# 3. Restart server
+restart_app.bat
+```
+
+**Note**: AWS Academy credentials expire after 3-4 hours. You need to refresh them for each session.
+
+See `FIX_EXPIRED_TOKEN.md` for detailed guide.
 
 ### Issue: Server won't start
 **Solution**: Kill existing processes

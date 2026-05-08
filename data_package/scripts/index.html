@@ -1606,6 +1606,19 @@
             <span class="trace-label">Model:</span>
             <span class="trace-value"><code>${escapeHtml(t.model || 'Unknown')}</code></span>
           </div>
+          ${t.performance ? `
+          <div class="trace-row">
+            <span class="trace-label">⚡ Performance:</span>
+            <span class="trace-value highlight">
+              ${t.performance.kb_cache_enabled ? '✓ KB Cache' : '✗ KB Cache'} | 
+              ${t.performance.rag_cache_enabled ? '✓ RAG Cache' : '✗ RAG Cache'} | 
+              ${t.performance.smart_rewriting_enabled ? '✓ Smart Rewrite' : '✗ Smart Rewrite'}
+              ${t.performance.db_pool_enabled ? ' | ✓ DB Pool' : ''}
+              ${t.performance.parallel_execution_enabled ? ' | ✓ Parallel' : ''}
+              ${t.performance.response_cache_enabled ? ' | ✓ Response Cache' : ''}
+            </span>
+          </div>
+          ` : ''}
           ${t.query_rewritten ? `
           <div class="trace-row">
             <span class="trace-label">Query Rewriting:</span>
